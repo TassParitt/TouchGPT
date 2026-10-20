@@ -90,9 +90,11 @@ Copy `.env.example` to `.env` only if you need to customize settings. Never comm
 PORT=3001
 DATA_DIR=.data
 COOKIE_SECURE=true
-OPENAI_API_KEY=your-server-side-key
+TOUCHGPT_AI_KEY=your-server-side-key
 OPENAI_MODEL=gpt-4.1-mini
 ```
+
+In Codex environment settings, supply the `TOUCHGPT_AI_KEY` secret for `api.openai.com`. `OPENAI_API_KEY` is also accepted for conventional deployments, but that name is reserved by the cloud environment configuration.
 
 Set `COOKIE_SECURE=true` on HTTPS deployments. Leave it false for local HTTP testing. AI labeling is optional and needs a valid server-side key, account sign-in, and outbound HTTPS access to `api.openai.com`. The UI asks before transmitting a photo. Without a key, the server reports that labeling is unconfigured; manual labels, sensing, storage and exports still work. API credentials are never sent to the browser. AI output is a suggestion, not ground truth. Browser speech recognition may transmit audio to the browser vendor's speech service.
 

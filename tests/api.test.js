@@ -19,7 +19,13 @@ async function call(route, body, cookie) {
 before(async () => {
   dir = await mkdtemp(path.join(tmpdir(), "touchgpt-test-"));
   server = spawn(process.execPath, ["server/index.js"], {
-    env: { ...process.env, PORT: "3137", DATA_DIR: dir, OPENAI_API_KEY: "" },
+    env: {
+      ...process.env,
+      PORT: "3137",
+      DATA_DIR: dir,
+      OPENAI_API_KEY: "",
+      TOUCHGPT_AI_KEY: "",
+    },
     stdio: ["ignore", "pipe", "pipe"],
   });
   await new Promise((resolve, reject) => {
