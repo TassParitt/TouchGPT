@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "touchgpt",
+  "main": "cloudflare/worker.js",
+  "compatibility_date": "2026-01-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "build": { "command": "npm run build" },
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api", "/api/*"],
+  },
+  // Local-first features work immediately. To enable cloud accounts/storage,
+  // create a D1 database, then add the REAL ID (see CLOUDFLARE.md):
+  // ,"d1_databases": [{
+  //   "binding": "DB", "database_name": "touchgpt",
+  //   "database_id": "YOUR_REAL_D1_DATABASE_ID",
+  //   "migrations_dir": "migrations"
+  // }]
+}

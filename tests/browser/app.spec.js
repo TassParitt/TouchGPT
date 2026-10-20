@@ -207,3 +207,35 @@ test("unsupported vibration cannot produce a density result", async ({
     0,
   );
 });
+
+test("cloud library loads subsequent D1 pages", async ({ page }) => {
+  await page.route("**/api/session", (route) =>
+    route.fulfill({
+      json: { user: { id: "user", email: "reader@example.com" } },
+    }),
+  );
+  await page.route("**/api/records*", (route) => {
+    const second =
+      new URL(route.request().url()).searchParams.get("offset") === "10";
+    return route.fulfill({
+      json: {
+        records: second
+          ? [{ id: "later", label: "Later material", type: "texture" }]
+          : [{ id: "first", label: "First material", type: "texture" }],
+        nextOffset: second ? null : 10,
+      },
+    });
+  });
+  await page.goto("/");
+  await page
+    .locator(".mobile-nav")
+    .getByRole("button", { name: "History" })
+    .click();
+  await page.getByRole("button", { name: "Open cloud library" }).click();
+  await expect(page.getByText("First material", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Load more results" }).click();
+  await expect(page.getByText("Later material", { exact: true })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Load more results" }),
+  ).toHaveCount(0);
+});

@@ -1613,10 +1613,15 @@ function App() {
 }
 function CloudLibrary({ onOpen }) {
   const [items, setItems] = useState(null),
-    [error, setError] = useState(null);
+    [error, setError] = useState(null),
+    [nextOffset, setNextOffset] = useState(null),
+    [loadingMore, setLoadingMore] = useState(false);
   useEffect(() => {
     api("records")
-      .then((d) => setItems(d.records))
+      .then((d) => {
+        setItems(d.records);
+        setNextOffset(d.nextOffset ?? null);
+      })
       .catch((e) => setError(e.message));
   }, []);
   return (
@@ -1647,6 +1652,8 @@ function CloudLibrary({ onOpen }) {
                 try {
                   await api("records/delete", { id: r.id });
                   setItems(items.filter((i) => i.id !== r.id));
+                  if (nextOffset !== null)
+                    setNextOffset(Math.max(0, nextOffset - 1));
                 } catch (e) {
                   setError(e.message);
                 }
@@ -1656,6 +1663,32 @@ function CloudLibrary({ onOpen }) {
             </button>
           </div>
         ))
+      )}
+      {nextOffset !== null && !error && (
+        <button
+          className="secondary full"
+          disabled={loadingMore}
+          onClick={async () => {
+            setLoadingMore(true);
+            try {
+              const data = await api(`records?offset=${nextOffset}`);
+              setItems((current) => {
+                const existing = new Set(current.map((r) => r.id));
+                return [
+                  ...current,
+                  ...data.records.filter((r) => !existing.has(r.id)),
+                ];
+              });
+              setNextOffset(data.nextOffset ?? null);
+            } catch (e) {
+              setError(e.message);
+            } finally {
+              setLoadingMore(false);
+            }
+          }}
+        >
+          {loadingMore ? "Loading…" : "Load more results"}
+        </button>
       )}
     </div>
   );

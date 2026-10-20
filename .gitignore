@@ -5,3 +5,7 @@ dist/
 test-results/
 playwright-report/
 *.log
+.wrangler/
+.cloudflare-build/
+.dev.vars
+.dev.vars.*

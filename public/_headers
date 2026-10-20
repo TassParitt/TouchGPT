@@ -1,0 +1,9 @@
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: same-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(self), microphone=(self), accelerometer=(self), gyroscope=(self)
+/sw.js
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache

@@ -127,6 +127,10 @@ npm run test:e2e     # mobile-sized Chromium workflows and synthetic microphone
 
 Browser tests default to `/usr/bin/chromium`; set `CHROMIUM_PATH` to a locally installed Chromium executable. Tests cover navigation, local history persistence, download, legacy mode, actual Web Audio with a synthetic microphone, permission denial, and offline app launch. Synthetic microphone results validate software plumbing, not physical material measurements. Test artifacts/databases are excluded from Git.
 
+## Cloudflare Workers / Pages
+
+For the GitHub deployment settings, static-assets fix, D1 setup, and optional AI secret, follow [CLOUDFLARE.md](CLOUDFLARE.md). `wrangler.jsonc` builds and serves `dist`; `cloudflare/api.js` supplies the D1 backend on Workers and Pages Functions. The original Node/SQLite workflow below remains supported.
+
 ## GitHub and deployment
 
 The source tree is intended for https://github.com/TassParitt/TouchGPT. Commit the source, `package-lock.json`, docs, CI, and public icons. Do not commit `.env`, `.data`, `node_modules`, or build artifacts. CI runs tests and a production build on pull requests and pushes.
@@ -140,4 +144,4 @@ docker build -t touchgpt .
 docker run --rm -p 3001:3001 -v touchgpt-data:/app/.data --env-file .env touchgpt
 ```
 
-Place the container behind your HTTPS reverse proxy. Docker deployment is provided but must be validated on your chosen host. GitHub Pages alone cannot run the Node API or SQLite backend; do not use a Pages-only deployment for cloud storage/AI.
+Place the container behind your HTTPS reverse proxy. Docker deployment is provided but must be validated on your chosen host. GitHub Pages alone cannot run the API. **Cloudflare Pages with the included Functions and a D1 binding** supports cloud storage/AI; static-only hosting does not.

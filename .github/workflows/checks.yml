@@ -13,6 +13,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
-      - run: npm run build
+      - run: npm run test:cloudflare
+      - run: npm run check:pages
       - run: npx playwright install --with-deps chromium
       - run: CHROMIUM_PATH=$(node --input-type=module -e 'import { chromium } from "playwright"; process.stdout.write(chromium.executablePath())') npm run test:e2e
