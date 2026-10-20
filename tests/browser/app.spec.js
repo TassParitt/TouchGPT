@@ -6,7 +6,7 @@ test("mobile navigation, sample results, local history, export and mode switch",
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto("/");
   await expect(
-    page.getByRole("heading", { name: "Feel a little deeper." }),
+    page.getByRole("heading", { name: "Let’s train AI with a sense of touch." }),
   ).toBeVisible();
   await expect(page.locator("body")).toHaveJSProperty("scrollWidth", 390);
   for (const name of ["Hardness", "Density", "Texture"]) {
@@ -108,7 +108,7 @@ test("offline shell loads after the production service worker is activated", asy
   await context.setOffline(true);
   await page.reload();
   await expect(
-    page.getByRole("heading", { name: "Feel a little deeper." }),
+    page.getByRole("heading", { name: "Let’s train AI with a sense of touch." }),
   ).toBeVisible();
   await page.getByRole("button", { name: /Try a sample measurement/ }).click();
   await expect(page.getByText("SAMPLE DATA", { exact: true })).toBeVisible();

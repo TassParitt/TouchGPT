@@ -642,7 +642,7 @@ function App() {
                     ? "Your discoveries, collected."
                     : result
                       ? "A closer look at your material."
-                      : "Feel a little deeper."}
+                      : "Let’s train AI with a sense of touch."}
               </h1>
               <p>
                 {tab === "calibration"
